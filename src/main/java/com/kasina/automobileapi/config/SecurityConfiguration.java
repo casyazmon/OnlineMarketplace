@@ -30,6 +30,7 @@ public class SecurityConfiguration {
         httpSecurity
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**").permitAll()
+                /*.requestMatchers("/api/v1/product/**").hasAnyRole("ADMIN", "USER")*/
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

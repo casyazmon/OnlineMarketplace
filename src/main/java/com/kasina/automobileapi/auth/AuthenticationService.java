@@ -2,7 +2,6 @@ package com.kasina.automobileapi.auth;
 
 import com.kasina.automobileapi.config.JwtService;
 import com.kasina.automobileapi.model.Role;
-import com.kasina.automobileapi.model.user.RegisterRequest;
 import com.kasina.automobileapi.model.user.User;
 import com.kasina.automobileapi.repository.RoleRepository;
 import com.kasina.automobileapi.repository.UserRepository;
@@ -28,6 +27,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse registerUser(RegisterRequest registerRequest) {
         Set<Role> roles = new HashSet<>();
+
         for (String roleName : registerRequest.getRoles()) {
             Role role = roleRepository.findByName(roleName)
                     .orElseThrow(() -> new IllegalArgumentException("Role not found: " + roleName));
@@ -61,5 +61,9 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public boolean isUsernameTaken(String username) {
+        return userRepository.findUserByEmail(username).isPresent();
     }
 }

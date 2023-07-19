@@ -1,4 +1,4 @@
-package com.kasina.automobileapi.model.user;
+package com.kasina.automobileapi.auth;
 
 import lombok.*;
 

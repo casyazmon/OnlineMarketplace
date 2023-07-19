@@ -1,12 +1,11 @@
 package com.kasina.automobileapi.model.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kasina.automobileapi.model.Product;
 import com.kasina.automobileapi.model.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @Builder
 @Entity
 @Table(name = "users")
@@ -32,10 +32,6 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
 
-    /*@ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private Set<String> roles = new HashSet<>();*/
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -43,12 +39,20 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
+
+
+    // TODO: address performance issue when using FetchType.EAGER
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Product> products;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(roles.toString()));
+        /*return List.of(new SimpleGrantedAuthority(roles.toString()));*/
+        return this.roles;
     }
 
     @Override

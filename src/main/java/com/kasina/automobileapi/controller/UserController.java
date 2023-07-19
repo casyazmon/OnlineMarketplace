@@ -2,12 +2,9 @@ package com.kasina.automobileapi.controller;
 
 import com.kasina.automobileapi.auth.AuthenticationService;
 import com.kasina.automobileapi.model.user.User;
-import com.kasina.automobileapi.model.user.RegisterRequest;
 import com.kasina.automobileapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,22 +16,6 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
 
-//    @PostMapping("/register")
-//    public ResponseEntity<User> registerUser(@RequestBody RegisterRequest registerRequest) {
-//        User registeredUser = userService.registerUser(registerRequest);
-//        return ResponseEntity.ok(registeredUser);
-//    }
-
-
-    // LOGIN FUNCTION
-//    @PostMapping("/login")
-//    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest) {
-//        Authentication authentication = userService.authenticateUser(loginRequest.getEmail(), loginRequest.getPassword());
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        String token = jwtTokenUtil.generateToken(userDetails);
-//        JwtResponse response = new JwtResponse(token);
-//        return ResponseEntity.ok(response);
-//    }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
