@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "products")
-@NoArgsConstructor
+
 @AllArgsConstructor
 public class Product {
     @Id
@@ -35,12 +35,17 @@ public class Product {
     @JoinTable(name = "product_category",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
+
+    public Product() {
+        this.categories = new HashSet<>();
+    }
 
     public void addCategory(Category category) {
-        this.categories.add(category);
+        categories.add(category);
         category.getProducts().add(this);
     }
+
 
     public void removeCategory(Category category) {
         categories.remove(category);

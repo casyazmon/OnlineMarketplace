@@ -24,9 +24,11 @@ public class ProductService {
     private final CategoryService categoryService;
 
     public Product createProduct(ProductDto productDto) {
-        // First, save the product to get the product ID
+
+        Set<Category> categories = new HashSet<>();
         User currentUser = userService.getCurrentUser();
-        var product = Product.builder()
+        Product product = new Product();
+         product = Product.builder()
                 .name(productDto.getName())
                 .description(productDto.getDescription())
                 .shortDescription(productDto.getShortDescription())
@@ -34,20 +36,17 @@ public class ProductService {
                 .image(productDto.getImage())
                 .user(currentUser)
                 .build();
-        Product savedProduct = productRepository.save(product);
 
         // Then, associate the product with the specified categories
         for (String categoryName : productDto.getCategories()) {
-            /*categoryService.getCategoryByName(categoryName).ifPresent(category -> {
-                savedProduct.addCategory(category);
-                productRepository.save(savedProduct);
-            });*/
-           Category category =  categoryService.getDefaultCategory(categoryName);
-           savedProduct.addCategory(category);
-           productRepository.save(savedProduct);
-        }
 
-        return savedProduct;
+           Category category =  categoryService.getDefaultCategory(categoryName);
+           System.out.println("******##*#**# CATEGORY NAME: " + category.getName() +"**********");
+           categories.add(category);
+        }
+        product.setCategories(categories);
+
+        return productRepository.save(product);
     }
 
     public  Product updateProduct(ProductDto productDto, Long id){

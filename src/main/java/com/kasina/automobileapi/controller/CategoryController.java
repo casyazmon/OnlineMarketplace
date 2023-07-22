@@ -1,8 +1,7 @@
 package com.kasina.automobileapi.controller;
 
-import com.kasina.automobileapi.dto.ProductDto;
+
 import com.kasina.automobileapi.model.Category;
-import com.kasina.automobileapi.model.Product;
 import com.kasina.automobileapi.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
