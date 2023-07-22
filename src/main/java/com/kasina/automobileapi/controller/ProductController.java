@@ -24,7 +24,19 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.getProductById(id);
+        Product product = productService.getProductById(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getProductByUser(@PathVariable Long id) {
+        Optional<List<Product>> product = productService.getUserProducts(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<?> getProductByCategory(@PathVariable Long id) {
+        Optional<List<Product>> product = productService.findProductByCategory(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
@@ -35,10 +47,16 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    @PutMapping("/{productId}")
+    public ResponseEntity<?> updateProduct(@RequestBody ProductDto productDto, @PathVariable Long productId){
+        Product product = productService.updateProduct(productDto,productId);
+        return ResponseEntity.ok(product);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok("Product deleted successfully");
     }
 
 }

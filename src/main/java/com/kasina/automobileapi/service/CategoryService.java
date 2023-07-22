@@ -1,12 +1,14 @@
 package com.kasina.automobileapi.service;
 
 import com.kasina.automobileapi.model.Category;
+import com.kasina.automobileapi.model.User;
 import com.kasina.automobileapi.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -27,8 +29,10 @@ public class CategoryService {
     }
 
     // Get a Category by ID
-    public Optional<Category> getCategoryById(Long CategoryId) {
-        return categoryRepository.findById(CategoryId);
+
+    public Category getCategoryById(Long userId) {
+        return categoryRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("Category not found with ID: " + userId));
     }
 
     public Optional<Category> getCategoryByName(String name) {
