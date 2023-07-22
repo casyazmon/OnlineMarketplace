@@ -2,6 +2,7 @@ package com.kasina.automobileapi.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,7 +20,6 @@ public class SecurityConfiguration {
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
@@ -30,7 +30,8 @@ public class SecurityConfiguration {
         httpSecurity
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                /*.requestMatchers("/api/v1/product/**").hasAnyRole("ADMIN", "USER")*/
+                .requestMatchers("/api/v1/products/**").hasAnyRole("ADMIN", "SELLER")
+                .requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN", "SELLER")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

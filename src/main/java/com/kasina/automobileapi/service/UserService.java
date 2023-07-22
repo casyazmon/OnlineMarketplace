@@ -1,7 +1,7 @@
 package com.kasina.automobileapi.service;
 
 
-import com.kasina.automobileapi.model.user.User;
+import com.kasina.automobileapi.model.User;
 import com.kasina.automobileapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

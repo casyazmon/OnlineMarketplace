@@ -1,7 +1,6 @@
 package com.kasina.automobileapi.controller;
 
-import com.kasina.automobileapi.auth.AuthenticationService;
-import com.kasina.automobileapi.model.user.User;
+import com.kasina.automobileapi.model.User;
 import com.kasina.automobileapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final AuthenticationService authenticationService;
-
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {

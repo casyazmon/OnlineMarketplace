@@ -2,7 +2,7 @@ package com.kasina.automobileapi.auth;
 
 import com.kasina.automobileapi.config.JwtService;
 import com.kasina.automobileapi.model.Role;
-import com.kasina.automobileapi.model.user.User;
+import com.kasina.automobileapi.model.User;
 import com.kasina.automobileapi.repository.RoleRepository;
 import com.kasina.automobileapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -2,20 +2,16 @@ package com.kasina.automobileapi.service;
 
 import com.kasina.automobileapi.model.Category;
 import com.kasina.automobileapi.model.Product;
-import com.kasina.automobileapi.model.dto.ProductDto;
-import com.kasina.automobileapi.model.dto.UrlErrorResponseDto;
-import com.kasina.automobileapi.model.user.User;
-import com.kasina.automobileapi.repository.CategoryRepository;
+import com.kasina.automobileapi.dto.ProductDto;
+import com.kasina.automobileapi.dto.UrlErrorResponseDto;
+import com.kasina.automobileapi.model.User;
 import com.kasina.automobileapi.repository.ProductRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,51 +21,74 @@ public class ProductService {
     @Autowired
     private final UserService userService;
     @Autowired
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found  with: " + id));
-    }
-
-    public ResponseEntity<?> addProduct(ProductDto productDto) {
+    public Product createProduct(ProductDto productDto) {
+        // First, save the product to get the product ID
         User currentUser = userService.getCurrentUser();
-        Set<Category> categories = new HashSet<>();
-
-        for (String categoryName : productDto.getCategories()) {
-            Category category = categoryRepository.findCategoryByName(categoryName)
-                    .orElseGet(() -> {
-                        Category newCategory = new Category();
-                        newCategory.setName(categoryName);
-                        return categoryRepository.save(newCategory);
-                    });
-            categories.add(category);
-        }
-        var pdt = Product.builder()
+        var product = Product.builder()
                 .name(productDto.getName())
                 .description(productDto.getDescription())
                 .shortDescription(productDto.getShortDescription())
                 .price(productDto.getPrice())
                 .image(productDto.getImage())
                 .user(currentUser)
-                .categories(categories)
                 .build();
+        Product savedProduct = productRepository.save(product);
 
-        return ResponseEntity.ok(productRepository.save(pdt));
+        // Then, associate the product with the specified categories
+        for (String categoryName : productDto.getCategories()) {
+            /*categoryService.getCategoryByName(categoryName).ifPresent(category -> {
+                savedProduct.addCategory(category);
+                productRepository.save(savedProduct);
+            });*/
+           Category category =  categoryService.getDefaultCategory(categoryName);
+           savedProduct.addCategory(category);
+           productRepository.save(savedProduct);
+        }
+
+        return savedProduct;
+    }
+
+    public  Product updateProduct(ProductDto productDto, Long id){
+        User currentUser = userService.getCurrentUser();
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+
+        existingProduct = Product.builder()
+                .name(productDto.getName())
+                .description(productDto.getDescription())
+                .shortDescription(productDto.getShortDescription())
+                .price(productDto.getPrice())
+                .image(productDto.getImage())
+                .user(currentUser)
+                .build();
+        return productRepository.save(existingProduct);
+
     }
 
 
-  /*  public Optional<List<Product>> getProductByCategory(Category category){
-       return productRepository.findProductByCategory(category);
-    }*/
-
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    // Get all products
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
+
+    // Get a product by ID
+    public Optional<Product> getProductById(Long productId) {
+        return productRepository.findById(productId);
+    }
+
+    // Update a product
+    public Product updateProduct(Product updatedProduct) {
+        return productRepository.save(updatedProduct);
+    }
+
+    // Delete a product by ID
+    public void deleteProductById(Long productId) {
+        productRepository.deleteById(productId);
+    }
+
 
     public Optional<List<Product>> getUserProducts() {
         User currentUser = userService.getCurrentUser();
@@ -77,7 +96,7 @@ public class ProductService {
             UrlErrorResponseDto urlErrorResponseDto = new UrlErrorResponseDto();
             urlErrorResponseDto.setStatus("User not found");
             urlErrorResponseDto.setError("422");
-             return null;
+             return Optional.empty();
         }
         return productRepository.findByUser(currentUser);
     }

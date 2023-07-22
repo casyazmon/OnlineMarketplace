@@ -1,4 +1,4 @@
-package com.kasina.automobileapi.model.user;
+package com.kasina.automobileapi.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

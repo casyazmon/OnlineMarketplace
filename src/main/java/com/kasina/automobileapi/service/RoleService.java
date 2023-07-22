@@ -1,7 +1,6 @@
 package com.kasina.automobileapi.service;
 
 import com.kasina.automobileapi.model.Role;
-import com.kasina.automobileapi.model.user.User;
 import com.kasina.automobileapi.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

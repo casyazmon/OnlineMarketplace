@@ -1,4 +1,4 @@
-package com.kasina.automobileapi.model.dto;
+package com.kasina.automobileapi.dto;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

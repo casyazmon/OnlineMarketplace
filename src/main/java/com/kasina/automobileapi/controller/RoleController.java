@@ -1,7 +1,6 @@
 package com.kasina.automobileapi.controller;
 
 import com.kasina.automobileapi.model.Role;
-import com.kasina.automobileapi.model.user.User;
 import com.kasina.automobileapi.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
