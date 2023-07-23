@@ -30,7 +30,7 @@ public class OrderService {
         // Create the order entity
         Order order = new Order();
         order.setUser(currentUser);
-        order.setStatus(orderRequest.getStatus());
+        order.setStatus("Pending");
         order.setShippingAddress(orderRequest.getShippingAddress());
 
 
@@ -42,12 +42,15 @@ public class OrderService {
 
             orderItem.setProduct(product);
             orderItem.setQuantity(itemRequest.getQuantity());
-            orderItem.setSubTotal(product.getPrice().multiply(BigDecimal.valueOf(itemRequest.getQuantity())));
+            BigDecimal subTotal = product.getPrice().multiply(BigDecimal.valueOf(itemRequest.getQuantity()));
+            orderItem.setSubTotal(subTotal);
 
             // Calculate and set other order item attributes if needed
 
             order.addOrderItem(orderItem);
+            grandTotal = grandTotal.add(subTotal);
         }
+        order.setTotalPrice(grandTotal);
 
         // Save the order in the database
         return orderRepository.save(order);
@@ -62,4 +65,38 @@ public class OrderService {
     }
 
 
+    public Order updateOrder(OrderRequest orderRequest, Long orderId) {
+        User currentUser = userService.getCurrentUser();
+
+        BigDecimal grandTotal = BigDecimal.ZERO;
+
+        // Create the order entity
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+
+        order.setStatus(orderRequest.getStatus());
+        order.setShippingAddress(orderRequest.getShippingAddress());
+
+
+        // Create order items and add them to the order
+        for (OrderItemRequest itemRequest : orderRequest.getItems()) {
+            OrderItem orderItem = new OrderItem();
+            Product product = productRepository.findById(itemRequest.getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+            orderItem.setProduct(product);
+            orderItem.setQuantity(itemRequest.getQuantity());
+            BigDecimal subTotal = product.getPrice().multiply(BigDecimal.valueOf(itemRequest.getQuantity()));
+            orderItem.setSubTotal(subTotal);
+
+            // Calculate and set other order item attributes if needed
+
+            order.addOrderItem(orderItem);
+            grandTotal = grandTotal.add(subTotal);
+        }
+        order.setTotalPrice(grandTotal);
+
+        // Save the order in the database
+        return orderRepository.save(order);
+    }
 }

@@ -8,14 +8,13 @@ import com.kasina.automobileapi.model.User;
 import com.kasina.automobileapi.service.OrderService;
 import com.kasina.automobileapi.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/categories")
+@RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
@@ -33,6 +32,12 @@ public class OrderController {
         User user = userService.getUserById(userId);
         List<Order> orders = orderService.getOrdersByUser(user);
         return ResponseEntity.ok(orders);
+    }
+
+    @PutMapping("/{orderId}")
+    public ResponseEntity<?> upDateOrder(@RequestBody OrderRequest orderRequest, @PathVariable Long orderId){
+        Order order = orderService.updateOrder(orderRequest, orderId);
+        return ResponseEntity.ok(order);
     }
 
     @GetMapping("/{orderId}")
