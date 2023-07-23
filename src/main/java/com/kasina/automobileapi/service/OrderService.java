@@ -9,7 +9,6 @@ import com.kasina.automobileapi.model.User;
 import com.kasina.automobileapi.repository.OrderRepository;
 import com.kasina.automobileapi.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

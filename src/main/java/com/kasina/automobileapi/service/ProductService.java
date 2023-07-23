@@ -83,9 +83,6 @@ public class ProductService {
         return productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("Product not found"));
     }
 
-    // Update a product
-
-
     // Delete a product by ID
     public void deleteProductById(Long productId) {
         productRepository.deleteById(productId);
