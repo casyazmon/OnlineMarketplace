@@ -40,7 +40,6 @@ public class ProductService {
 
         // Then, associate the product with the specified categories
         for (String categoryName : productDto.getCategories()) {
-
            Category category =  categoryService.getDefaultCategory(categoryName);
            categories.add(category);
         }
