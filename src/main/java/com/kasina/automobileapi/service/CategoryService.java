@@ -1,9 +1,7 @@
 package com.kasina.automobileapi.service;
 
 import com.kasina.automobileapi.model.Category;
-import com.kasina.automobileapi.model.User;
 import com.kasina.automobileapi.repository.CategoryRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

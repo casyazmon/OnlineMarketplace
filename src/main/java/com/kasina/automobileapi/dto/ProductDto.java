@@ -1,6 +1,5 @@
 package com.kasina.automobileapi.dto;
 
-import com.kasina.automobileapi.model.ImageModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
