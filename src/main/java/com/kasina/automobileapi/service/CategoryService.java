@@ -16,11 +16,10 @@ import java.util.Optional;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-
-
     // Create a new Category
-    public Category createCategory(Category Category) {
-        return categoryRepository.save(Category);
+    public Category createCategory(Category category) {
+        Optional<Category> defaultCategoryOpt = categoryRepository.findByName(category.getName());
+        return defaultCategoryOpt.orElseGet(() -> categoryRepository.save(category));
     }
 
     // Get all Categories
@@ -29,7 +28,6 @@ public class CategoryService {
     }
 
     // Get a Category by ID
-
     public Category getCategoryById(Long userId) {
         return categoryRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("Category not found with ID: " + userId));

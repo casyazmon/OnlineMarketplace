@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -26,6 +28,9 @@ public class Product {
     private String shortDescription;
     private BigDecimal price;
     private String image;
+
+    /*@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImageModel> images = new ArrayList<>();*/
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -53,6 +58,7 @@ public class Product {
         categories.remove(category);
         category.getProducts().remove(this);
     }
+
 
 
 }

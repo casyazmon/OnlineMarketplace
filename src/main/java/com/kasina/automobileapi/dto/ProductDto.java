@@ -1,5 +1,6 @@
 package com.kasina.automobileapi.dto;
 
+import com.kasina.automobileapi.model.ImageModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,6 @@ public class ProductDto {
     private String description;
     private String shortDescription;
     private BigDecimal price;
-    private String image;
     private List<String> categories;
+    private String image;
 }
